@@ -26,6 +26,8 @@ public class Test_ReorderList {
         head.next = new ReorderList.ListNode(1);
         head.next.next = new ReorderList.ListNode(2);
         head.next.next.next = new ReorderList.ListNode(3);
+        head.next.next.next.next = new ReorderList.ListNode(4);
+        head.next.next.next.next.next = new ReorderList.ListNode(5);
 
         ReorderList.reorderList(head);
         ReorderList.printList(head);

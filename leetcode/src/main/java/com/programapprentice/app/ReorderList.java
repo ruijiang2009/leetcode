@@ -52,60 +52,55 @@ public class ReorderList {
         }
     }
 
+    /**
+     * space complexity: O(1)
+     * time complexity: O(n)
+     * */
     public static void reorderList(ListNode head) {
         if(head == null || head.next == null || head.next.next == null) {
             return;
         }
-        ListNode evenList = null;
-        ListNode pEven = null;
-        ListNode oddList = null;
-        ListNode pOdd = null;
+        // 1. find the length of list
+        int length = 0;
         ListNode p = head;
         while(p != null) {
-            if(evenList == null) {
-                evenList = p;
-                pEven = evenList;
-                p = p.next;
-                pEven.next = null;
-                if(p == null) {
-                    break;
-                } else {
-                    oddList = p;
-                    pOdd = oddList;
-                    p = p.next;
-                    pOdd.next = null;
-                }
-            } else {
-                pEven.next = p;
-                p = p.next;
-                pEven = pEven.next;
-                pEven.next = null;
-                if(p == null) {
-                    break;
-                } else {
-                    pOdd = p;
-                    p = p.next;
-                    pOdd.next = oddList;
-                    oddList = pOdd;
-                }
-            }
+            length ++;
+            p = p.next;
         }
-        printList(evenList);
-        printList(oddList);
-        pEven = evenList;
-        pOdd = oddList;
-        head = evenList;
-        ListNode qEven = null;
-        ListNode qOdd = null;
-        while(pOdd != null) {
-            qOdd = pOdd.next;
-            qEven = pEven.next;
-            pOdd.next = pEven.next;
-            pEven.next = pOdd;
-            pOdd = qOdd;
-            pEven = qEven;
+        boolean isOdd = (length % 2) == 1;
+
+        // 2. reverse the latter half list
+        int halfLength = isOdd ? length / 2 : (length / 2 - 1);
+
+        p = head;
+        for(int i = 0; i < halfLength; i++) {
+            p = p.next;
+        }
+        ListNode latterHalf = p.next;
+        p.next = null;
+
+        p = latterHalf.next;
+        latterHalf.next = null;
+        ListNode q = null;
+        while(p != null) {
+            q = p.next;
+            p.next = latterHalf;
+            latterHalf = p;
+            p = q;
+        }
+
+        // 3. start merge two lists
+        p = head;
+        q = latterHalf;
+        while(latterHalf != null) {
+            latterHalf = q.next;
+            q.next = p.next;
+            p.next = q;
+            p = q.next;
+            q = latterHalf;
         }
     }
+
     public static void printList(ListNode head) {
         ListNode p = head;
         while(p != null) {
