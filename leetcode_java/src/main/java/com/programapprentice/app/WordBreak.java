@@ -18,7 +18,8 @@ import java.util.Stack;
  * Return true because "leetcode" can be segmented as "leet code".
  * */
 public class WordBreak {
-    public static boolean wordBreak(String s, Set<String> dict) {
+    // this algorithm is to slow
+    public static boolean wordBreakTooSlow(String s, Set<String> dict) {
         if(s.length() <= 1) {
             return dict.contains(s);
         }
@@ -46,5 +47,28 @@ public class WordBreak {
             endIndex++;
         }
         return true;
+    }
+
+    public static boolean wordBreak(String s, Set<String> dict) {
+        if(s.length() <= 1) {
+            return dict.contains(s);
+        }
+
+        boolean result[] = new boolean[s.length()];
+        for(int i = 0; i < s.length(); i++) {
+            if(dict.contains(s.substring(0, i+1))) {
+                result[i] = true;
+            } else {
+                for(int j = 0; j < i; j++) {
+                    if(result[j]) {
+                        if(dict.contains(s.substring(j+1, i+1))) {
+                            result[i] = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return result[s.length() - 1];
     }
 }
