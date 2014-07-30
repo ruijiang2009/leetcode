@@ -68,4 +68,20 @@ public class Test_WordBreakII {
             System.out.println(s);
         }
     }
+
+    @Test
+    public void test5() {
+        String[] strs = {"aaaa","aa","a"};
+        Set<String> dict = new HashSet<String>();
+        for(String s : strs) {
+            dict.add(s);
+        }
+        String input = "aaaaaaa";
+        System.out.println("input length " + input.length());
+        List<String> output = WordBreakII.wordBreak(input, dict);
+        System.out.println("output size " + output.size());
+        for(String s : output) {
+            System.out.println(s);
+        }
+    }
 }
