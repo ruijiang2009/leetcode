@@ -49,8 +49,10 @@ public class Test_WordBreakII {
             dict.add(s);
         }
 
-        boolean output = WordBreak.wordBreak("leetcode", dict);
-        assertEquals(false, output);
+        List<String> output = WordBreakII.wordBreak("leetcode", dict);
+        for(String s : output) {
+            System.out.println(s);
+        }
     }
 
     @Test

@@ -22,15 +22,15 @@ import java.util.*;
  */
 public class WordBreakII {
 
-    public static String getString(String s, List<Integer> path) {
+    public static String getString(String s, Stack<Integer> stack) {
         StringBuilder sb = new StringBuilder("");
         int begIndex = 0;
         int endIndex = 0;
-        for(int i = path.size(); i > 1; i--) {
-            begIndex = path.get(i-1);
-            endIndex = path.get(i-2);
+        while(!stack.isEmpty()) {
+            endIndex = stack.pop() + 1;
             sb.append(s.substring(begIndex, endIndex));
             sb.append(" ");
+            begIndex = endIndex;
         }
         return sb.toString().trim();
     }
@@ -48,6 +48,7 @@ public class WordBreakII {
         for(int i = 0; i < s.length(); i++) {
             endWith.add(new ArrayList<Integer>());
         }
+
         ArrayList<Integer> node = null;
         for(int end = 0; end < s.length(); end++) {
             node = endWith.get(end);
@@ -65,38 +66,38 @@ public class WordBreakII {
         }
 
         Stack<Integer> stack = new Stack<Integer>();
-        stack.push(endWith.get(s.length() - 1).get(0));
-        Stack<ArrayList<Integer>> pathStack = new Stack<ArrayList<Integer>>();
-        ArrayList<Integer> path = new ArrayList<Integer>();
-        path.add(s.length()-1);
+        stack.push(s.length() - 1);
         Stack<Integer> cursorStack = new Stack<Integer>();
         cursorStack.add(0);  // this is node's cursor
         while(!stack.isEmpty()) {
             int top = stack.peek();
             int cursor = cursorStack.peek();
-            path = pathStack.peek();
             node = endWith.get(top);
             if(cursor < node.size()) {
-                stack.push(node.get(cursor));
-                path.add(node.get(cursor));
-                pathStack.add(path);
-                cursorStack.push(0);
-
-                // generate new path
                 if(node.get(cursor) == 0) {
-                    output.add(getString(s, path));
+                    output.add(getString(s, (Stack<Integer>)stack.clone()));
+                    cursorStack.pop();
+                    stack.pop();
+
+                    if(!cursorStack.empty()) {
+                        cursor = cursorStack.pop();
+                        cursorStack.push(cursor + 1);
+                    }
+                } else {
+                    if(!endWith.get(node.get(cursor) - 1).isEmpty()) {
+                        stack.push(node.get(cursor) - 1);
+                        cursorStack.push(0);
+                    } else {
+                        cursor = cursorStack.pop();
+                        cursorStack.push(cursor + 1);
+                    }
                 }
             } else {
                 stack.pop();
                 cursorStack.pop();
-                pathStack.pop();
-                top = stack.peek();
-                node = endWith.get(top);
-                cursor = cursorStack.pop();
-                if(cursor < node.size()) {
-                    cursorStack.push(node.get(cursor+1));
-                } else {
-                    cursorStack.push(s.length());
+                if(!cursorStack.empty()) {
+                    cursor = cursorStack.pop();
+                    cursorStack.push(cursor + 1);
                 }
             }
         }
@@ -105,14 +106,3 @@ public class WordBreakII {
     }
 
 }
-/**
- * procedure DFS-iterative(G,v):
- *     let S be a stack
- *     S.push(v)
- *     while S is not empty
- *           v ← S.pop()
- *           if v is not labeled as discovered:
- *               label v as discovered
- *               for all edges from v to w in G.adjacentEdges(v) do
- *                   S.push(w)
- * */
