@@ -17,37 +17,72 @@ package com.programapprentice.app;
  Note: It is intended for the problem statement to be ambiguous. You should gather all requirements up front before implementing one.
  */
 public class ValidNumber {
-    public static boolean isNumber(String s) {
+    public boolean isNumber(char c) {
+        if (c >= '0' && c <= '9') {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean doesContainOperator(String s) {
+        if (s.contains("+") || s.contains("-")) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isNumber(String s) {
         s = s.trim();
+        if(s.isEmpty()) {
+            return false;
+        }
+
+        String left = null;
+        String right = null;
+        if(s.contains("e")) {
+            int index = s.indexOf('e');
+            left = s.substring(0, index);
+            right = s.substring(index+1);
+        } else if(s.contains("E")) {
+            int index = s.indexOf('E');
+            left = s.substring(0, index);
+            right = s.substring(index+1);
+        } else {
+            return isLeftNumber(s);
+        }
+        if(left.equals("") || right.equals("")) {
+            return false;
+        }
+
+        if (isLeftNumber(left) && isRightNumber(right)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isLeftNumber(String s) {
         if(s.equals("")) {
             return false;
         }
-        String subStrs = s.split(".");
-
+        if(s.charAt(0) == '-' || s.charAt(0) == '+' ) {
+            s = s.substring(1);
+            if(s.equals("")) {
+                return false;
+            }
+        }
         boolean hasDot = false;
-        boolean hasE = false;
-        boolean hasNumber = false;
+        boolean hasLeftNumber = false;
+        boolean hasRightNumber = false;
         for(int i = 0; i < s.length(); i++) {
             if(isNumber(s.charAt(i))) {
-                hasNumber = true;
-                continue;
+                if(hasDot) {
+                    hasRightNumber = true;
+                } else {
+                    hasLeftNumber = true;
+                }
             } else if(s.charAt(i) == '.') {
                 if(!hasDot) {
-                    if(hasE && !hasNumber) {
-                        return false;
-                    }
                     hasDot = true;
-                    hasNumber = false;
-                } else {
-                    return false;
-                }
-            } else if(s.charAt(i) == 'e') {
-                if(!hasE) {
-                    if(!hasNumber) {
-                        return false;
-                    }
-                    hasE = true;
-                    hasNumber = false;
                 } else {
                     return false;
                 }
@@ -55,26 +90,35 @@ public class ValidNumber {
                 return false;
             }
         }
-//        if(hasDot && !hasNumber) {
-//            return false;
-//        }
-        if(hasE && !hasNumber) {
-            return false;
+        if(hasDot) {
+            if(hasLeftNumber || hasRightNumber) {
+                return true;
+            } else {
+                return false;
+            }
         }
-
         return true;
     }
 
-    public static boolean isNumberWithoutDoc(String str) {
-
-
-    }
-
-
-    public static boolean isNumber(char c) {
-        if (c >= '0' && c <= '9') {
-            return true;
+    public boolean isRightNumber(String s) {
+        if(s.equals("")) {
+            return false;
         }
-        return false;
+        if(s.charAt(0) == '-' || s.charAt(0) == '+' ) {
+            s = s.substring(1);
+            if(s.equals("")) {
+                return false;
+            }
+        }
+        boolean hasNumber = false;
+        for(int i = 0; i < s.length(); i++) {
+            if(isNumber(s.charAt(i))) {
+                hasNumber = true;
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
+
 }
