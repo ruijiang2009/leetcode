@@ -1,7 +1,6 @@
 package com.programapprentice.app;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author rjiang
@@ -61,7 +60,111 @@ public class PalindromePartitioning {
         return true;
     }
 
-    public List<List<String>> partition(String s) {
+    public String findPalindrome(String input, int startIndex, int minLength) {
+        for(int i = startIndex + minLength; i < input.length(); i++) {
+            if(isPalindrome(input.substring(startIndex, i+1))) {
+                return input.substring(startIndex, i+1);
+            }
+        }
+        return null;
+    }
 
+//    public List<List<String>> partition(String s) {
+//        List<String> strStack = new ArrayList<String>();
+//        List<Integer> indexStack = new ArrayList<Integer>();
+//        List<Integer> palindromeLengthStack = new ArrayList<Integer>();
+//
+//        List<List<String>> output = new ArrayList<List<String>>();
+//
+//        strStack.add(String.valueOf(s.charAt(0)));
+//        indexStack.add(0);
+//        palindromeLengthStack.add(1);
+//        int curEndIndex = 0;
+//        int startIndex = 0;
+//        int minLength = 0;
+//        int minLengthFromBegin = 1;
+//        String tmp = null;
+//        List<String> one = null;
+//        while(!(strStack.isEmpty() && findPalindrome(s, 0, minLengthFromBegin) == null)) {
+//            if(strStack.isEmpty()) {
+//
+//            } else {
+//                startIndex = indexStack.get(indexStack.size()) + 1;
+//                minLength = palindromeLengthStack.get(palindromeLengthStack.size()-1);
+//                if(startIndex == s.length()) {
+//                    one = new ArrayList<String>();
+//                    for(String str : strStack) {
+//                        one.add(str);
+//                    }
+//                    output.add(one);
+//                    strStack.remove(strStack.size() - 1);
+//                    indexStack.remove(indexStack.size() - 1);
+//                    palindromeLengthStack.remove(palindromeLengthStack.size() - 1);
+//                    palindromeLengthStack.set(palindromeLengthStack.size() - 1,
+//                            minLength + 1);
+//                } else {
+//
+//                    tmp = findPalindrome(s, startIndex, minLength);
+//                    if (tmp != null) {
+//                        strStack.add(tmp);
+//                        indexStack.add(startIndex + tmp.length() - 1);
+//                        palindromeLengthStack.add(tmp.length());
+//                    } else {
+//                        strStack.remove(strStack.size() - 1);
+//                        indexStack.remove(indexStack.size() - 1);
+//                        palindromeLengthStack.remove(palindromeLengthStack.size() - 1);
+//                        palindromeLengthStack.set(palindromeLengthStack.size() - 1,
+//                                palindromeLengthStack.get(palindromeLengthStack.size() - 1) + 1);
+//
+//                    }
+//                }
+//            }
+//        }
+//        return output;
+//    }
+
+
+
+    public List<String> findPalindromes(String input, int startIndex) {
+        List<String> output = new ArrayList<String>();
+        for(int i = startIndex+1; i <= input.length(); i++) {
+            if(isPalindrome(input.substring(startIndex, i))) {
+                output.add(input.substring(startIndex, i));
+            }
+        }
+        return output;
+    }
+
+    // Using BFS instead of DfS
+    public List<List<String>> partition(String s) {
+        Queue<List<String>> queue = new LinkedList<List<String>>();
+        Queue<Integer> lenQueue = new LinkedList<Integer>();
+        List<List<String>> output = new ArrayList<List<String>>();
+
+        List<String> tmpList = findPalindromes(s, 0);
+        List<String> list = null;
+        for(String tmp : tmpList) {
+            list = new ArrayList<String>();
+            list.add(tmp);
+            queue.add(list);
+            lenQueue.add(tmp.length());
+        }
+        int existingLength = 0;
+        while(!queue.isEmpty()) {
+            list = queue.remove();
+            existingLength = lenQueue.remove();
+            if(existingLength == s.length()) {
+                output.add(list);
+            } else {
+                tmpList = findPalindromes(s, existingLength);
+                for(String tmp : tmpList) {
+                    List<String> newList = new ArrayList<String>(list);
+                    newList.add(tmp);
+                    queue.add(newList);
+                    lenQueue.add(existingLength + tmp.length());
+                }
+            }
+        }
+        return output;
     }
 }
