@@ -34,6 +34,28 @@ public class PalindromePartitioningII {
         return output;
     }
 
+    public List<Integer> findPalindromes(String input, int startIndex, boolean[][] isPalindrome) {
+        char startChar = input.charAt(startIndex);
+        List<Integer> output = new ArrayList<Integer>();
+        for(int i = 0; i < startIndex; i++) {
+            if(input.charAt(i) != startChar) {
+                continue;
+            } else {
+                if(i == startIndex-1) {
+                    output.add(i);
+                    isPalindrome[i][startIndex] = true;
+                    isPalindrome[startIndex][i] = true;
+                } else {
+                    if (isPalindrome[i + 1][startIndex - 1]) {
+                        output.add(i);
+                    }
+                }
+            }
+        }
+        output.add(startIndex); // adding itself.
+        return output;
+    }
+
     // use DP
     public int minCut(String s) {
         if(s == null || s.length() == 1) {
@@ -45,16 +67,20 @@ public class PalindromePartitioningII {
 
         cuts[0] = 0;
         for(int i = 1; i < s.length(); i++) {
-            List<Integer> indexes = findPalindromes(s, i);
+            isPalindrome[i][i] = true;
+            cuts[i] = s.length();
+            List<Integer> indexes = findPalindromes(s, i, isPalindrome);
             for(Integer integer : indexes) {
                 isPalindrome[integer][i] = true;
                 isPalindrome[i][integer] = true;
+                if(integer == 0) {
+                    cuts[i] = 0;
+                } else {
+                    cuts[i] = cuts[i] > cuts[integer-1] + 1 ? cuts[integer-1] + 1 : cuts[i];
+                }
             }
-            int left = indexes.get(indexes.size()-1);
-            if(left == 0) {
-                cuts[i] = 0;
-            } else {
-                cuts[i] = cuts[left - 1] + 1;
+            if(indexes.isEmpty()) {
+                cuts[i] = cuts[i - 1] + 1;
             }
         }
 

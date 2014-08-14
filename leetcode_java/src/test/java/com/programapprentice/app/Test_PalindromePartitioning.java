@@ -81,5 +81,17 @@ public class Test_PalindromePartitioning {
             System.out.println("");
         }
     }
+
+    @Test
+    public void test7() {
+        String input = "aabbaaa";
+        List<List<String>> output = obj.partition(input);
+        for(List<String> l : output) {
+            for(String s : l) {
+                System.out.print(s + ", ");
+            }
+            System.out.println("");
+        }
+    }
 }
 
