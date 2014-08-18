@@ -79,4 +79,14 @@ public class Test_BinaryTreeMaximumPathSum {
         int expected = 2;
         assertEquals(expected, output);
     }
+
+    @Test
+    public void test6() {
+        BinaryTreeMaximumPathSum.TreeNode root = new BinaryTreeMaximumPathSum.TreeNode(-2);
+        root.right = new BinaryTreeMaximumPathSum.TreeNode(-1);
+
+        int output = obj.maxPathSum(root);
+        int expected = -1;
+        assertEquals(expected, output);
+    }
 }

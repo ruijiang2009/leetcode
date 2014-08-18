@@ -19,9 +19,9 @@ public class BinaryTreeMaximumPathSum {
     }
 
     class MaxSum {
-        int max = 0;
-        int singleMax = 0; // only one chile included
-        int globalMax = 0;
+        int max = Integer.MIN_VALUE;
+        int singleMax = Integer.MIN_VALUE; // only one chile included
+        int globalMax = Integer.MIN_VALUE;
     }
 
     public int maxPathSum(TreeNode root) {
@@ -53,8 +53,23 @@ public class BinaryTreeMaximumPathSum {
             rightMax = maxPathSumTree(root.right);
         }
 
-        output.max = root.val + leftMax.singleMax + rightMax.singleMax;
-        output.singleMax = (leftMax.singleMax > rightMax.singleMax ? leftMax.singleMax : rightMax.singleMax) + root.val;
+        if (leftMax.singleMax <= 0) {
+            if (rightMax.singleMax <= 0) {
+                output.max = root.val;
+                output.singleMax = root.val;
+            } else {
+                output.max = root.val + rightMax.singleMax;
+                output.singleMax = root.val + rightMax.singleMax;
+            }
+        } else {
+            if (rightMax.singleMax <= 0) {
+                output.max = root.val + leftMax.singleMax;
+                output.singleMax = root.val + leftMax.singleMax;
+            } else {
+                output.max = root.val + rightMax.singleMax + leftMax.singleMax;
+                output.singleMax = (leftMax.singleMax > rightMax.singleMax ? leftMax.singleMax : rightMax.singleMax) + root.val;
+            }
+        }
 
         output.globalMax = output.max > output.singleMax ? output.max : output.singleMax;
         output.globalMax = output.max > leftMax.globalMax ? output.max : leftMax.globalMax;
