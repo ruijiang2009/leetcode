@@ -22,12 +22,18 @@ import java.util.List;
  * You should return [1,2,3,6,9,8,7,4,5].
  * */
 
- public class SpiralMatrix {
+public class SpiralMatrix {
     public List<Integer> spiralOrder(int[][] matrix) {
         if(matrix == null) {
             return new ArrayList<Integer>();
         }
         int height = matrix.length;
+        if(height == 0) {
+            return new ArrayList<Integer>();
+        }
+        if(matrix[0] == null) {
+            return new ArrayList<Integer>();
+        }
         int width = matrix[0].length;
 
         if(height == 1 || width == 1) {
@@ -52,8 +58,10 @@ import java.util.List;
                 output.add(matrix[numOfRound][numOfRound + i]);
             }
         }  else {
-            for(int i = 0; i < heightLeft; i++) {
-                output.add(matrix[numOfRound + i][numOfRound]);
+            if(widthLeft != 0) {
+                for (int i = 0; i < heightLeft; i++) {
+                    output.add(matrix[numOfRound + i][numOfRound]);
+                }
             }
         }
         return output;
