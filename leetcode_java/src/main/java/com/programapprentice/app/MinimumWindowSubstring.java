@@ -25,14 +25,16 @@ import java.util.List;
 public class MinimumWindowSubstring {
 
     class SubWindow {
-        boolean complete = false;
         int startIndex = 0;
         int endIndex = 0;
         HashMap<Character, Integer> record = new HashMap<Character, Integer>();
 
-        public boolean isComplete(HashMap<Character, Integer> dict) {
+        public boolean isComplete(HashMap<Character, Integer> dict, int targetLength) {
+            if(targetLength > (endIndex - startIndex + 1)) {
+                return false;
+            }
             for(Character c : dict.keySet()) {
-                if(dict.get(c) != record.get(c)) {
+                if(dict.get(c) < record.get(c)) {
                     return false;
                 }
             }
@@ -53,6 +55,18 @@ public class MinimumWindowSubstring {
                 dict.put(T.charAt(i), dict.get(T.charAt(i)) + 1);
             }
         }
+
+        HashMap<Character, Integer> sdict = new HashMap<Character, Integer>();
+        for(int i = 0; i < S.length(); i++) {
+            if(sdict.get(S.charAt(i)) == null) {
+                sdict.put(S.charAt(i), 1);
+            } else {
+                sdict.put(S.charAt(i), sdict.get(S.charAt(i)) + 1);
+            }
+        }
+        if(sdict.keySet().size() != dict.keySet().size()) {
+            return "";
+        }
         List<SubWindow> subWindowList = new ArrayList<SubWindow>();
         SubWindow subWindow = null;
         String window = null;
@@ -65,7 +79,7 @@ public class MinimumWindowSubstring {
                     } else {
                         subWindow.record.put(S.charAt(i), subWindow.record.get(S.charAt(i)) + 1);
                     }
-                    if(subWindow.isComplete(dict)) {
+                    if(subWindow.isComplete(dict, T.length())) {
                         subWindow.endIndex = i;
                         window = S.substring(subWindow.startIndex, subWindow.endIndex+1);
                         if(output == null) {
@@ -74,12 +88,18 @@ public class MinimumWindowSubstring {
                             output = output.length() > window.length() ? window : output;
                         }
                         subWindowList.remove(j);
+                    } else {
+                        if (output != null) {
+                            if (subWindow.endIndex - subWindow.startIndex + 1 > output.length()) {
+                                subWindowList.remove(j);
+                            }
+                        }
                     }
                 }
                 subWindow = new SubWindow();
                 subWindow.startIndex = i;
                 subWindow.record.put(S.charAt(i), 1);
-                if(subWindow.isComplete(dict)) {
+                if(subWindow.isComplete(dict, T.length())) {
                     output = String.valueOf(S.charAt(i));
                 } else {
                     subWindowList.add(subWindow);
