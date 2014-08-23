@@ -60,4 +60,24 @@ public class Test_InterleavingString {
         boolean expected = true;
         assertEquals(expected, output);
     }
+
+    @Test
+    public void test6() {
+        String s1 = "ab";
+        String s2 = "bc";
+        String s3 = "bbac";
+        boolean output = obj.isInterleave(s1, s2, s3);
+        boolean expected = false;
+        assertEquals(expected, output);
+    }
+
+    @Test
+    public void test7() {
+        String s1 = "aacaac";
+        String s2 = "aacaaeaac";
+        String s3 = "aacaaeaaeaacaac";
+        boolean output = obj.isInterleave(s1, s2, s3);
+        boolean expected = false;
+        assertEquals(expected, output);
+    }
 }
