@@ -6,7 +6,9 @@ package com.programapprentice.app;
  */
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Given a string containing only digits, restore it by returning all possible valid IP address combinations.
@@ -20,24 +22,34 @@ public class RestoreIPAddresses {
     public List<String> restoreIpAddresses(String s) {
         List<String> output = new ArrayList<String>();
         String tmp = null;
-        List<String> subOutput = new ArrayList<String>();
+        Set<String> outputSet = new HashSet<String>();
+        Set<String> tmpSet = new HashSet<String>();
         int maxLength = s.length() > 3 ? 3 : s.length();
         for(int i = 0; i < maxLength; i++) {
             tmp = s.substring(0, i+1);
+            if(tmp.length() > 1) {
+                if(tmp.charAt(0) == '0') {
+                    break;
+                }
+            }
             if(Integer.valueOf(tmp) <= 255 && Integer.valueOf(tmp) >= 0) {
-                subOutput = restoreIpAddresses(s.substring(i + 1), 3);
-                for(String so : subOutput) {
-                    output.add(tmp + so);
+                tmpSet = restoreIpAddresses(s.substring(i + 1), 3);
+                for(String so : tmpSet) {
+                    outputSet.add(tmp + so);
                 }
             }
         }
+        output.addAll(outputSet);
         return output;
     }
 
     // need to get #num addresses
-    public List<String> restoreIpAddresses(String s, int num) {
-        List<String> output = new ArrayList<String>();
+    public Set<String> restoreIpAddresses(String s, int num) {
+        Set<String> output = new HashSet<String>();
         if(1 == num) {
+            if(s.length() > 1 && s.charAt(0) == '0') {
+                return output;
+            }
             if(s.length() > 0 && s.length() <= 3 && Integer.valueOf(s) <= 255 && Integer.valueOf(s) >= 0) {
                 output.add("." + s);
             }
@@ -45,10 +57,15 @@ public class RestoreIPAddresses {
         }
 
         String tmp = null;
-        List<String> subOutput = new ArrayList<String>();
+        Set<String> subOutput = new HashSet<String>();
         int maxLength = s.length() > 3 ? 3 : s.length();
         for(int i = 0; i < maxLength; i++) {
             tmp = s.substring(0, i+1);
+            if(tmp.length() > 1) {
+                if(tmp.charAt(0) == '0') {
+                    break;
+                }
+            }
             if(Integer.valueOf(tmp) <= 255 && Integer.valueOf(tmp) >= 0) {
                 subOutput = restoreIpAddresses(s.substring(i + 1), num - 1);
                 for(String so : subOutput) {
