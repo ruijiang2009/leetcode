@@ -39,7 +39,8 @@ public class Test_WordLadderII {
         Set<String> dict = new HashSet<String>();
         dict.addAll(Arrays.asList(list));
         long startTime = System.currentTimeMillis();
-        List<List<String>> output = obj.findLaddersSolution(start, end, dict);
+//        List<List<String>> output = obj.findLaddersSolution(start, end, dict);
+        List<List<String>> output = obj.findLadders(start, end, dict);
         long endTime = System.currentTimeMillis();
         long cost = endTime - startTime;
         System.out.println(cost + "ms");
