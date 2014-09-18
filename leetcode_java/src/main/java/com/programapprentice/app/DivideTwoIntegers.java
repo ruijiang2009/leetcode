@@ -56,28 +56,68 @@ public class DivideTwoIntegers {
         if(divisor == 1) {
             return dividend;
         }
-        int[] records = new int[128];
-        boolean[] isExist = new boolean[128];
-        int[] num = new int[128];
+        if(divisor == 2) {
+            return dividend >> 1;
+        }
+        int[] records = new int[128]; // save (divisor << i)
+        int[] num = new int[128]; // save (2 ^ i)
         int tmp = divisor;
         int count = 0;
         int result = 0;
-        num[0] = 1;
+        num[0] = 1; // 2 ^ 0 = 1
         while(tmp <= dividend) {
-            System.out.println(count);
             records[count] = tmp;
-            tmp = tmp << 1;
-            if(count != 0) {
-                num[count] = num[count-1] << 1;
+            dividend -= tmp;
+            result += num[count];
+            if(dividend < tmp) {
+                break;
             }
+            tmp = tmp << 1;
             count ++;
+            num[count] = num[count-1] << 1;
         }
-        for(int i = count; i >= 0; i--) {
+
+        for(int i = count-1; i >= 0; i--) {
             if(dividend >= records[i]) {
                 result += num[i];
                 dividend -= records[i];
+            } else {
+                continue;
             }
         }
         return result;
     }
+
+//    public int dividePositive(int dividend, int divisor) {
+//        if(dividend < divisor) {
+//            return 0;
+//        }
+//        if(divisor == 1) {
+//            return dividend;
+//        }
+//        int[] records = new int[128];
+//        boolean[] isExist = new boolean[128];
+//        int[] num = new int[128];
+//        int tmp = divisor;
+//        int count = 0;
+//        int result = 0;
+//        num[0] = 1;
+//        while(tmp <= dividend) {
+//            System.out.println(count);
+//            records[count] = tmp;
+//            tmp = tmp << 1;
+//            if(count != 0) {
+//                num[count] = num[count-1] << 1;
+//            }
+//            count ++;
+//        }
+//        for(int i = count; i >= 0; i--) {
+//            if(dividend >= records[i]) {
+//                result += num[i];
+//                dividend -= records[i];
+//            }
+//        }
+//        return result;
+//    }
+//
 }

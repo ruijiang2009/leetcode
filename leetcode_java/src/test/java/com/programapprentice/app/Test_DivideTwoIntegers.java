@@ -45,4 +45,22 @@ public class Test_DivideTwoIntegers {
         int actual = obj.divide(dividend, divisor);
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void test5() {
+        int dividend = 2147483647;
+        int divisor = 3;
+        int expected = 715827882;
+        int actual = obj.divide(dividend, divisor);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void test6() {
+        int dividend = 1100540749;
+        int divisor = -1090366779;
+        int expected = -1;
+        int actual = obj.divide(dividend, divisor);
+        assertEquals(expected, actual);
+    }
 }
