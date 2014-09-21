@@ -25,38 +25,44 @@ public class MergeKSortedLists {
             return lists.get(0);
         }
         int k = lists.size();
-        if(k == 0) {
-            return null;
-        }
-        if(lists.get(0) == null) {
-            return null;
-        }
         ListNode[] heads = new ListNode[k];
+        int headSize = 0;
         for(int i = 0; i < k; i++) {
-            heads[i] = lists.get(i);
+            if(lists.get(i) == null)
+                continue;
+            heads[headSize] = lists.get(i);
+            headSize++;
+        }
+        if(0 == headSize) {
+            return null;
         }
         ListNode newHead = null;
-        buildMinHeap(heads, k);
+        buildMinHeap(heads, headSize);
         newHead = heads[0];
-        int headSize = k;
+
         ListNode tmp = null;
         tmp = newHead;
         if(tmp.next != null) {
             heads[0] = tmp.next;
         } else {
-            headSize = k - 1;
+            // move the last one to the current
+            heads[0] = heads[headSize-1];
+            headSize--;
         }
-        int diff = k - headSize;
 
         while(headSize > 0) {
-            heapify(heads, 1 + diff, headSize);
-            tmp.next = heads[diff];
+            heapify(heads, 1, headSize);
+            tmp.next = heads[0];
             tmp = tmp.next;
             if(tmp.next != null) {
-                heads[diff] = tmp.next;
+                heads[0] = tmp.next;
             } else {
-                headSize--;
-                diff = k - headSize;
+                if(headSize >= 1) {
+                    heads[0] = heads[headSize - 1];
+                    headSize--;
+                } else {
+                    break;
+                }
             }
         }
         tmp.next = null;
@@ -65,6 +71,9 @@ public class MergeKSortedLists {
     }
 
     public void buildMinHeap(ListNode[] data, int length) {
+        if(0 == length) {
+            return;
+        }
         int heapSize = length;
         for(int i = heapSize / 2; i > 0; i--) {
             heapify(data, i, length);
@@ -92,6 +101,7 @@ public class MergeKSortedLists {
             data[index-1] = tmp;
             heapify(data, minIndex, length);
         }
-
     }
+
+
 }
