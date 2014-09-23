@@ -1,12 +1,21 @@
 package com.programapprentice.app;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * User: ruijiang
  * Date: 9/15/14
  * Time: 9:56 PM
  */
+
+/**
+ *
+ * Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+ * One solution:
+ * http://blog.csdn.net/linhuanmars/article/details/19899259
+ * */
 public class MergeKSortedLists {
     public static class ListNode {
          int val;
@@ -17,7 +26,8 @@ public class MergeKSortedLists {
          }
     }
 
-    public ListNode mergeKLists(List<ListNode> lists) {
+    // my own heap method is too slow
+    public ListNode mergeKListsV1(List<ListNode> lists) {
         if(lists == null || lists.size() == 0) {
             return null;
         }
@@ -103,5 +113,103 @@ public class MergeKSortedLists {
         }
     }
 
+    // using priority queue
+    public ListNode mergeKListsV2(List<ListNode> lists) {
+        PriorityQueue<ListNode> priorityQueue = new PriorityQueue<ListNode>(10, new Comparator<ListNode>() {
+            @Override
+            public int compare(ListNode listNode, ListNode listNode2) {
+                return listNode.val - listNode2.val;
+            }
+        });
+
+        for(int i = 0; i < lists.size(); i++)
+        {
+            ListNode node = lists.get(i);
+            if(node!=null)
+            {
+                priorityQueue.offer(node);
+            }
+        }
+        ListNode head = null;
+        ListNode pre = head;
+        while(priorityQueue.size()>0)
+        {
+            ListNode cur = priorityQueue.poll();
+            if(head == null) {
+                head = cur;
+                pre = head;
+            } else {
+                pre.next = cur;
+            }
+            pre = cur;
+            if(cur.next!=null) {
+                priorityQueue.offer(cur.next);
+            }
+        }
+        return head;
+    }
+
+    public ListNode mergeKLists(List<ListNode> lists) {
+        if(lists == null || lists.size() == 0) {
+            return null;
+        }
+        if(lists.size() == 1) {
+            return lists.get(0);
+        }
+
+
+        return mergeLists(lists, 0, lists.size() - 1);
+
+    }
+
+    public ListNode mergeLists(List<ListNode> lists, int start, int end) {
+        if(start == end) {
+            return lists.get(start);
+        }
+        if(end - 1 == start) {
+            return merge2Lists(lists.get(start), lists.get(end));
+        } else {
+            return merge2Lists(mergeLists(lists, start, start + (end-start)/2),
+                               mergeLists(lists, start + (end-start)/2 + 1, end));
+        }
+
+    }
+
+    public ListNode merge2Lists(ListNode h1, ListNode h2) {
+        if(h1 == null && h2 == null) {
+            return null;
+        } else if (h1 == null) {
+            return h2;
+        } else if (h2 == null) {
+            return h1;
+        }
+        ListNode p1 = h1;
+        ListNode p2 = h2;
+        ListNode newHead = null;
+        if(p1.val > p2.val) {
+            newHead = p2;
+            p2 = p2.next;
+        } else {
+            newHead = p1;
+            p1 = p1.next;
+        }
+        ListNode p = newHead;
+        while(p1 != null && p2 != null) {
+            if(p1.val > p2.val) {
+                p.next = p2;
+                p2 = p2.next;
+            } else {
+                p.next = p1;
+                p1 = p1.next;
+            }
+            p = p.next;
+        }
+        if(p1 == null) {
+            p.next = p2;
+        } else {
+            p.next = p1;
+        }
+        return newHead;
+    }
 
 }
