@@ -283,7 +283,7 @@ public class WordLadderII {
     }
 
     public List<List<String>> findLadders(String start, String end, Set<String> dict) {
-        long startTime = System.currentTimeMillis();
+//        long startTime = System.currentTimeMillis();
         List<List<String>> output = new ArrayList<List<String>>();
         if(dict.size() == 0) {
             return output;
@@ -291,7 +291,7 @@ public class WordLadderII {
 
         Queue<String> wordQueue = new LinkedList<String>();
         Queue<Integer> depthQueue = new LinkedList<Integer>();
-        HashMap<String, Set<String>> preMap = new HashMap<String, Set<String>>();
+        HashMap<String, Set<String>> nextMap = new HashMap<String, Set<String>>();
         wordQueue.add(end);
         depthQueue.add(1);
 
@@ -299,6 +299,8 @@ public class WordLadderII {
         String newWord = null;
         int depth = 1;
         int minDepth = dict.size() + 1;
+        int preDepth = 1;
+        HashSet<String> visitedCurLevel = new HashSet<String>();
 
         String curWord = null;
         while(!wordQueue.isEmpty()) {
@@ -307,6 +309,11 @@ public class WordLadderII {
             if(depth >= minDepth) {
                 break;
             }
+            if (depth > preDepth) {
+                dict.removeAll(visitedCurLevel);
+                visitedCurLevel = new HashSet<String>();
+            }
+            preDepth = depth;
             for(int i = 0; i < curWord.length(); i++)  {
                 char[] wordArray = curWord.toCharArray();
                 for(char c = 'a'; c <= 'z'; c++) {
@@ -314,29 +321,70 @@ public class WordLadderII {
                     newWord = new String(wordArray);
                     if(newWord.equals(start)) {
                         minDepth = depth + 1 < minDepth ? depth + 1 : minDepth;
-                        break;
-                    } else if(!curWord.equals(newWord) && dict.contains(newWord)) {
-                        tmpSet = preMap.get(curWord);
+                        tmpSet = nextMap.get(newWord);
                         if(tmpSet == null) {
                             tmpSet = new HashSet<String>();
                         }
-                        tmpSet.add(newWord);
-                        preMap.put(curWord, tmpSet);
-                        wordQueue.add(newWord);
-                        depthQueue.add(depth+1);
-                        dict.remove(newWord);
+                        tmpSet.add(curWord);
+                        nextMap.put(newWord, tmpSet);
+                        break;
+                    } else if(!curWord.equals(newWord) && dict.contains(newWord)) {
+                        tmpSet = nextMap.get(newWord);
+                        if(tmpSet == null) {
+                            tmpSet = new HashSet<String>();
+                        }
+                        tmpSet.add(curWord);
+                        nextMap.put(newWord, tmpSet);
+                        if(visitedCurLevel.add(newWord)) {
+                            wordQueue.add(newWord);
+                            depthQueue.add(depth + 1);
+                        }
                     }
                 }
             }
         }
-        long endTime = System.currentTimeMillis();
-        printMap(preMap);
-        System.out.println("before get paths " + (endTime - startTime) + " ms");
+//        long endTime = System.currentTimeMillis();
+//        printMap(nextMap);
+//        System.out.println("before get paths " + (endTime - startTime) + " ms");
         // after create all the preMap, generate output from that map.
-        output = getPaths(start, end, preMap);
+        output = getPathsV2(start, end, nextMap);
         return output;
     }
 
+    public List<List<String>> getPathsV2(String start, String end, HashMap<String, Set<String>> map) {
+
+        List<List<String>> output = new ArrayList<List<String>>();
+        if(!map.containsKey(start) || map.get(start).size() == 0) {
+            // there is no such conversion from start to end
+            return output;
+        }
+
+        List<String> path = new ArrayList<String>();
+        path.add(start);
+        Queue<List<String>> pathQueue = new LinkedList<List<String>>();
+        pathQueue.add(path);
+        Set<String> nextList = null;
+        while(!pathQueue.isEmpty()) {
+            path = pathQueue.remove();
+            nextList = map.get(path.get(path.size() - 1));
+            if(nextList == null) {
+                continue;
+            }
+            for (String word : nextList) {
+                List<String> newPath = new ArrayList<String>(path);
+                newPath.add(word);
+                if(word.equals(end)) {
+                    output.add(newPath);
+                } else {
+                    if(map.get(word) != null) {
+                        pathQueue.add(newPath);
+                    }
+                }
+            }
+
+        }
+        return output;
+    }
 
     class Node {
         LinkedList<String> path;
@@ -382,20 +430,9 @@ public class WordLadderII {
         return output;
     }
 
-//    public void printMap(HashMap<String, List<String>> map) {
-//        for(String key : map.keySet()) {
-//            List<String> list = map.get(key);
-//            System.out.print(key + " : ");
-//            for(String word : list) {
-//                System.out.print(word + '\t');
-//            }
-//            System.out.println("");
-//        }
-//    }
-
-    public void printMap(HashMap<String, Set<String>> map) {
+    public void printMapList(Map<String, List<String>> map) {
         for(String key : map.keySet()) {
-            Set<String> list = map.get(key);
+            List<String> list = map.get(key);
             System.out.print(key + " : ");
             for(String word : list) {
                 System.out.print(word + '\t');
@@ -403,6 +440,18 @@ public class WordLadderII {
             System.out.println("");
         }
     }
+
+    public void printMap(HashMap<String, Set<String>> map) {
+        for(String key : map.keySet()) {
+            Set<String> list = map.get(key);
+            System.out.print(key + " : ");
+            for(String word : list) {
+                System.out.print(word + "    ");
+            }
+            System.out.println("");
+        }
+    }
+
     //http://codeganker.blogspot.com/2014/04/word-ladder-ii-leetcode.html
     class StringWithLevel {
         String str;
@@ -466,6 +515,7 @@ public class WordLadderII {
                 curStrCharArray[i] = originalChar;
             }
         }
+//        printMapList(nextMap);
         if(found) {
             ArrayList<String> list = new ArrayList<String>();
             list.add(start);
