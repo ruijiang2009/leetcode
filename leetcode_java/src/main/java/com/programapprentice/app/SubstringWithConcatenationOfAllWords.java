@@ -162,6 +162,83 @@ public class SubstringWithConcatenationOfAllWords {
         return output;
     }
 
+    // add accepted version
+    public List<Integer> findSubstringV3(String S, String[] L) {
+        if(S == null || null == L || L.length == 0) {
+            return new ArrayList<Integer>();
+        }
+
+        int wordLength = L[0].length();
+        if(S.length() < L[0].length() * L.length) {
+            return new ArrayList<Integer>();
+        }
+
+        HashMap<String, Integer> dict = new HashMap<String, Integer>();
+        for(String str : L) {
+            if(dict.get(str) == null) {
+                dict.put(str, 1);
+            } else {
+                dict.put(str, dict.get(str) + 1);
+            }
+        }
+        HashMap<String, Integer> numMap = new HashMap<String, Integer>();
+        int counter = 0;
+        int num = 0;
+        Integer visitedNum = null;
+        List<Integer> output = new ArrayList<Integer>();
+        int start = -1;
+        int cursor  = 0;
+        String word = null;
+        String tmpWord = null;
+        while(cursor < S.length() && cursor + wordLength <= S.length()) {
+            word = S.substring(cursor, cursor + wordLength);
+            if(dict.get(word) != null) {
+                if(-1 == start) {
+                    start = cursor;
+                }
+                visitedNum = numMap.get(word);
+                if(visitedNum == null || visitedNum == 0) {
+                    num = 1;
+                } else {
+                    num = visitedNum + 1;
+                }
+                numMap.put(word, num);
+
+                if(num > dict.get(word)) {
+                    do {
+                        tmpWord = S.substring(start, start + wordLength);
+                        numMap.put(tmpWord, numMap.get(tmpWord) - 1);
+                        if(!tmpWord.equals(word)) {
+                            counter--;
+                        }
+                        start += wordLength;
+                    } while(!tmpWord.equals(word));
+                } else {
+                    counter ++;
+                }
+                if(counter == L.length) {
+                    output.add(start);
+                    tmpWord = S.substring(start, start + wordLength);
+                    numMap.put(tmpWord, numMap.get(tmpWord) - 1);
+                    start += wordLength;
+                    counter--;
+                }
+                cursor += wordLength;
+            } else {
+                numMap.clear();
+                counter = 0;
+                if(start == -1) {
+                    cursor += 1;
+                } else {
+                    cursor = start + 1;
+                }
+                start = -1;
+            }
+        }
+
+        return output;
+    }
+
     public List<Integer> findSubstring(String S, String[] L) {
         if(S == null || null == L || L.length == 0) {
             return new ArrayList<Integer>();
