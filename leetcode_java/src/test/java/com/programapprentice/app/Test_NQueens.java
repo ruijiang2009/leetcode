@@ -11,10 +11,19 @@ import java.util.List;
  */
 public class Test_NQueens {
     NQueens obj = new NQueens();
+    NQueensII obj2 = new NQueensII();
 
     @Test
     public void test1() {
         List<String[]> output = obj.solveNQueens(4);
+        printOutput(output);
+    }
+
+    @Test
+    public void test2() {
+        List<String[]> output = obj.solveNQueens(8);
+        int num = obj2.totalNQueens(8);
+        System.out.println("# Solution is " + num);
         printOutput(output);
     }
 
