@@ -67,25 +67,3 @@ void Solution::reverseWords(string &s) {
     }
     s = output;
 }
-
-
-int main() {
-    Solution obj;
-
-    string s = "the sky is blue";
-    obj.reverseWords(s);
-    cout << s << endl;
-
-    s = "  the  sky  is  blue ";
-    obj.reverseWords(s);
-    cout << s << endl;
-
-    s = "   ";
-    obj.reverseWords(s);
-    cout << s << endl;
-
-    s = "a";
-    obj.reverseWords(s);
-    cout <<s.length() <<  s << endl;
-    return 0;
-}
