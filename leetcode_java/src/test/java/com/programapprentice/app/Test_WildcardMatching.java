@@ -93,4 +93,13 @@ public class Test_WildcardMatching {
         boolean actual = obj.isMatch(s, p);
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void test10() {
+        String s = "aababcabc";
+        String p = "a*ab*abc";
+        boolean expected = true;
+        boolean actual = obj.isMatch(s, p);
+        assertEquals(expected, actual);
+    }
 }

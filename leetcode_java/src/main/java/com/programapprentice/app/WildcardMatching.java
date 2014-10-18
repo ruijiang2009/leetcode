@@ -37,24 +37,74 @@ public class WildcardMatching {
                 return false;
             }
         }
-        int j = 0;
-        for(int i = 0; i < s.length(); i++) {
-            if(p.charAt(j) == '?') {
-                j++;
+        int sPos = 0;
+        int starPos = -1;
+        int pPos = 0;
+        int sPosBak = -1;
+
+        while(sPos < s.length()) {
+            if(pPos < p.length() &&
+                    (s.charAt(sPos) == p.charAt(pPos)
+                     || p.charAt(pPos) == '?')) {
+                pPos++;
+                sPos++;
+            } else if (pPos < p.length() && p.charAt(pPos) == '*') {
+                starPos = pPos;
+                sPosBak = sPos;
+                pPos++;
                 continue;
-            } if(p.charAt(j) == '*') {
-                continue;
+            } else if (starPos != -1) {
+                sPos = sPosBak;
+                pPos = starPos + 1;
+                sPosBak++;
             } else {
-                if(p.charAt(j) == s.charAt(i)) {
-                    j++;
-                    if(j == p.length() && i < s.length() - 1) {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
+                return false;
             }
         }
-        return true;
+
+        while (pPos < p.length() && p.charAt(pPos) == '*') {
+           pPos++;
+        }
+        return sPos == s.length() && pPos == p.length();
+    }
+
+    // http://www.programering.com/a/MTN0kzMwATU.html
+    public boolean isMatchSolution(String s, String p) {
+        if (s == null || p == null) return false;
+        if (s.equals(p)) return true;
+        int m = s.length();
+        int n = p.length();
+        int posS = 0;
+        int posP = 0;
+        int posStar = -1;
+        int posOfS = -1;
+        //if posS == posP || posP == '?', ++posS and ++posP.
+        //posOfS, posStar, record the positon of '*' in s and p, ++posP and go on.
+        //if not match, go back to star, ++posOfS
+        while (posS < m) {
+            if (posP < n && (s.charAt(posS) == p.charAt(posP) || p.charAt(posP) == '?')) {
+                ++posS;
+                ++posP;
+            }
+            else if (posP < n && p.charAt(posP) == '*') {
+                posStar = posP;
+                posOfS = posS;
+                ++posP;
+                continue;
+            }
+            else if (posStar != -1) {
+                posS = posOfS;
+                posP = posStar + 1;
+                ++posOfS;
+            }
+            else {
+                return false;
+            }
+        }
+        while (posP < n && p.charAt(posP) == '*') {
+            ++posP;
+        }
+
+        return posS == m && posP == n;
     }
 }
