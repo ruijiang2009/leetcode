@@ -26,9 +26,15 @@ package com.programapprentice.app;
  * isMatch("aab", "c*a*b") → true
  * */
 
-// good reference
+// good reference http://leetcode.com/2011/09/regular-expression-matching.html
 public class RegularExpressionMatching {
-    // failed
+    /** Use recursion
+     * If the next character of p is NOT ‘*’, then it must match the current character of s.
+     * Continue pattern matching with the next character of both s and p.
+     * If the next character of p is ‘*’, then we do a brute force exhaustive matching
+     * of 0, 1, or more repeats of current character of p…
+     * Until we could not match any more characters.
+     * */
     public boolean isMatch(String s, String p) {
         if (s == null || p == null) return false;
         if(p.length() == 0) {
@@ -38,60 +44,27 @@ public class RegularExpressionMatching {
                 return false;
             }
         }
-        int sPos = 0;
-        int pPos = 0;
-        char charPreStart = 0;
-
-        while(sPos < s.length()) {
-            if(pPos < p.length()
-                    && (s.charAt(sPos) == p.charAt(pPos) || p.charAt(pPos) == '.')) {
-                charPreStart = p.charAt(pPos);
+        if(p.length() == 1) {
+            return s.length() == 1 && (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.');
+        }
+        if(p.charAt(1) != '*') {
+            if(s.length() == 0) {
+                return false;
+            }
+            if(s.charAt(0) == p.charAt(0) || p.charAt(0) == '.') {
+                return isMatch(s.substring(1), p.substring(1));
+            } else {
+                return false;
+            }
+        } else {
+            int sPos = -1;
+            while(sPos < s.length() && (sPos < 0 || p.charAt(0) == '.' || p.charAt(0) == s.charAt(sPos))) {
+                if (isMatch(s.substring(sPos + 1), p.substring(2))) {
+                    return true;
+                }
                 sPos++;
-                pPos++;
-            } else if(pPos < p.length() && p.charAt(pPos) == '*') {
-                if(s.charAt(sPos) == charPreStart || charPreStart == '.') {
-                    sPos++;
-                } else {
-                    pPos++;
-                }
-            } else {
-                if(pPos+1 < p.length() && p.charAt(pPos+1) == '*') {
-                    sPos++;
-                    pPos += 2;
-                } else {
-                    return false;
-                }
             }
+            return false;
         }
-
-        while(pPos < p.length()) {
-            if(p.charAt(pPos) == '*') {
-                pPos++;
-            } else if(pPos + 1 < p.length()) {
-                if(p.charAt(pPos+1) == '*') {
-                    pPos += 2;
-                    continue;
-                } else {
-                    break;
-                }
-            } else {
-                break;
-            }
-        }
-
-        return sPos == s.length() && pPos == p.length();
-
-    }
-
-    public boolean isMatch(String s, String p) {
-        if (s == null || p == null) return false;
-        if(p.length() == 0) {
-            if(s.length() == 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
     }
 }

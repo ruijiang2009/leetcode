@@ -109,4 +109,31 @@ public class Test_RegularExpressionMatching {
         boolean actual = obj.isMatch(s, p);
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void test12() {
+        String s = "ab";
+        String p = ".*c";
+        boolean expected = false;
+        boolean actual = obj.isMatch(s, p);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void test13() {
+        String s = "a";
+        String p = ".*..a*";
+        boolean expected = false;
+        boolean actual = obj.isMatch(s, p);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void test14() {
+        String s = "a";
+        String p = ".";
+        boolean expected = true;
+        boolean actual = obj.isMatch(s, p);
+        assertEquals(expected, actual);
+    }
 }
