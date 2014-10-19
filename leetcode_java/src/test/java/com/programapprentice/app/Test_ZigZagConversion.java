@@ -32,7 +32,7 @@ public class Test_ZigZagConversion {
 
     @Test
     public void test3() {
-        String input = "ABCDEFGHIJKLMN";
+        String input = "Actual   :AGMBFHLNCEIKDJ\n";
         int nRows = 4;
         String expected = "ACB";
         String actual = obj.convert(input, nRows);
