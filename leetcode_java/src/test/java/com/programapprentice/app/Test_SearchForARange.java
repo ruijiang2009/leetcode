@@ -42,4 +42,20 @@ public class Test_SearchForARange {
         int[] actual = obj.searchRange(input, 1);
         assertArrayEquals(expected, actual);
     }
+
+    @Test
+    public void test5() {
+        int[] input = {2 ,2};
+        int[] expected = {0, 1};
+        int[] actual = obj.searchRange(input, 2);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void test5Solution() {
+        int[] input = {2 ,2};
+        int[] expected = {0, 1};
+        int[] actual = obj.searchRangeSolution(input, 2);
+        assertArrayEquals(expected, actual);
+    }
 }
