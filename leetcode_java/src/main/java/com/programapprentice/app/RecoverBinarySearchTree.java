@@ -7,7 +7,12 @@ package com.programapprentice.app;
 
 /**
  * Two elements of a binary search tree (BST) are swapped by mistake.
+ *
  * Recover the tree without changing its structure.
+ *
+ * Note:
+ * A solution using O(n) space is pretty straight forward. Could you devise a constant space solution?
+ * confused what "{1,#,2,3}" means?
  * */
 public class RecoverBinarySearchTree {
     public class TreeNode {
@@ -16,7 +21,6 @@ public class RecoverBinarySearchTree {
         TreeNode right;
         TreeNode(int x) { val = x; }
     }
-
     public void recoverTree(TreeNode root) {
 
     }
