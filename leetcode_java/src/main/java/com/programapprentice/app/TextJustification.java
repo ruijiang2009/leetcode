@@ -6,6 +6,7 @@ package com.programapprentice.app;
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,12 +33,77 @@ import java.util.List;
 public class TextJustification {
     public List<String> fullJustify(String[] words, int L) {
         List<String> result = new ArrayList<String>();
-        List<String> line = null;
+        List<String> line = new ArrayList<String>();
         int lineCount = 0;
+        int wordCount = 0;
         for(String word : words) {
-
+            if(lineCount == 0) {
+                lineCount += word.length();
+                wordCount += word.length();
+                line.add(word);
+            } else {
+                if(lineCount + word.length() + 1 > L) {
+                    result.add(justifyOneLine(line, L, wordCount));
+                    line = new ArrayList<String>();
+                    line.add(word);
+                    lineCount = word.length();
+                    wordCount = word.length();
+                } else {
+                    line.add(word);
+                    lineCount += word.length() + 1;
+                    wordCount += word.length();
+                }
+            }
         }
+        result.add(justifyLastLine(line, L, wordCount));
 
         return result;
+    }
+
+    public String justifyOneLine(List<String> line, int L, int wordCount) {
+        StringBuilder sb = new StringBuilder();
+        if(line.size() == 1) {
+            sb.append(line.get(0));
+            char[] array = new char[L - wordCount];
+            Arrays.fill(array, ' ');
+            sb.append(new String(array));
+            return sb.toString();
+        }
+        int numOfWords = line.size();
+        int numOfSpace = L - wordCount;
+        int regularSpaceLength = numOfSpace / (numOfWords - 1);
+        int numOfUnregularSpace = numOfSpace % (numOfWords - 1);
+        char[] array = new char[regularSpaceLength];
+        Arrays.fill(array, ' ');
+        String regularSpace = new String(array);
+        String nonRegularSpace = regularSpace + ' ';
+        sb.append(line.get(0));
+        for(int i = 1; i < line.size(); i++) {
+            if(i <= numOfUnregularSpace) {
+                sb.append(nonRegularSpace);
+            } else {
+                sb.append(regularSpace);
+            }
+            sb.append(line.get(i));
+        }
+        return sb.toString();
+    }
+
+    public String justifyLastLine(List<String> line, int L, int wordCount) {
+        StringBuilder sb = new StringBuilder();
+        int spaceLength = L;
+        sb.append(line.get(0));
+        spaceLength -= line.get(0).length();
+        for(int i = 1; i < line.size(); i++) {
+            sb.append(" ");
+            sb.append(line.get(i));
+            spaceLength -= line.get(i).length() + 1;
+        }
+        if(spaceLength > 0) {
+            char[] array = new char[spaceLength];
+            Arrays.fill(array, ' ');
+            sb.append(new String(array));
+        }
+        return sb.toString();
     }
 }
