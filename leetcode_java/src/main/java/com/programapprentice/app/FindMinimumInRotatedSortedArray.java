@@ -29,16 +29,11 @@ public class FindMinimumInRotatedSortedArray {
                 return num[mid];
             }
             if(num[mid] > num[high]) {
-                low = mid;
+                low = (mid + 1) % num.length;
             } else {
-                high = mid;
+                high = (mid - 1 + num.length) % num.length;
             }
         }
         return num[low];
     }
 }
-/**
- * case 1: the min is [0]
- * case 2: the min is [lenght-1]
- * case 3: the min iis in the middle
- * */
