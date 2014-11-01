@@ -24,28 +24,6 @@ public class RecoverBinarySearchTree {
         TreeNode(int x) { val = x; }
     }
 
-
-//    public void recoverTree(TreeNode root) {
-//        TreeNode first = null;
-//        TreeNode second = null;
-//        Stack<TreeNode> stack = new Stack<TreeNode>();
-//        Stack<String> statusStack = new Stack<String>();
-//
-//        stack.push(root);
-//        statusStack.push("left");
-//        TreeNode top = null;
-//        String topStatus = null;
-//        while(!stack.isEmpty()) {
-//            top = stack.peek();
-//            topStatus = statusStack.peek();
-//            if(topStatus.equals("left")) {
-//                topStatus.
-//            }
-//        }
-//
-//        // swap first and second
-//    }
-
     private class Result {
         TreeNode first = null;
         TreeNode second = null;
@@ -62,7 +40,7 @@ public class RecoverBinarySearchTree {
         Result result = new Result(first, second);
         recoverTree(root, null, result);
         if(result.first != null && result.second != null) {
-            // wap first and second
+            // swap first and second
             int tmp = result.first.val;
             result.first.val = result.second.val;
             result.second.val = tmp;
@@ -73,15 +51,6 @@ public class RecoverBinarySearchTree {
         if(root == null) {
             return pre;
         }
-        if(pre != null && root.left != null && pre.val > root.left.val) {
-            if(result.first == null) {
-                result.first = pre;
-                result.second = root.left;
-            } else {
-                result.second = root.left;
-            }
-        }
-        pre = root.left == null ? pre : root.left;
         pre = recoverTree(root.left, pre, result);
         if(pre != null && pre.val > root.val) {
             if(result.first == null) {
@@ -93,7 +62,6 @@ public class RecoverBinarySearchTree {
         }
         pre = root;
         pre = recoverTree(root.right, pre, result);
-        pre = root.right == null ? pre : root.right;
         return pre;
     }
 

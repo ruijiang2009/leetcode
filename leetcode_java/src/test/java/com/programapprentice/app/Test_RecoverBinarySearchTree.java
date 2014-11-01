@@ -64,18 +64,28 @@ public class Test_RecoverBinarySearchTree {
         obj.recoverTree(root);
     }
 
-    /**
-     *Input:	{68,41,#,-85,#,-73,-49,-98,#,#,#,-124}
-     Output:	{68,-85,#,41,#,-73,-49,-98,#,#,#,-124}
-     Expected:	{68,41,#,-73,#,-85,-49,-98,#,#,#,-124}
-     */
     @Test
     public void test7() {
         // {68,41,#,-85,#,-73,-49,-98,#,#,#,-124}
         // Expected: {68,41,#,-73,#,-85,-49,-98,#,#,#,-124}
-        RecoverBinarySearchTree.TreeNode root = new RecoverBinarySearchTree.TreeNode(2);
+        RecoverBinarySearchTree.TreeNode root = new RecoverBinarySearchTree.TreeNode(68);
+        root.left = new RecoverBinarySearchTree.TreeNode(41);
+        root.left.left = new RecoverBinarySearchTree.TreeNode(-85);
+        root.left.left.left = new RecoverBinarySearchTree.TreeNode(-73);
+        root.left.left.right = new RecoverBinarySearchTree.TreeNode(-49);
+        root.left.left.left.left = new RecoverBinarySearchTree.TreeNode(-98);
+        root.left.left.left.left.left = new RecoverBinarySearchTree.TreeNode(-124);
+        obj.recoverTree(root);
+    }
+
+    @Test
+    public void test8() {
+        // {3,1,#,#,2,#,4}
+        // Expected: {4,1,#,#,2,#,3}
+        RecoverBinarySearchTree.TreeNode root = new RecoverBinarySearchTree.TreeNode(3);
         root.left = new RecoverBinarySearchTree.TreeNode(1);
-        root.left.right = new RecoverBinarySearchTree.TreeNode(3);
+        root.left.right = new RecoverBinarySearchTree.TreeNode(2);
+        root.left.right.right = new RecoverBinarySearchTree.TreeNode(4);
         obj.recoverTree(root);
     }
 }
