@@ -44,11 +44,21 @@ public class MaximumProductSubarray {
         int tmpMax = max;
         int tmpMin = min;
         for(int i = 1; i < A.length; i++) {
-            tmpMax = Math.max(max, max * A[i]);
-            tmpMin = Math.min(min, min * A[i]);
-            globalMax = Math.max();
+            tmpMax = max;
+            tmpMin = min;
+            max = max3(tmpMax * A[i], tmpMin*A[i], A[i]);
+            min = min3(tmpMax * A[i], tmpMin*A[i], A[i]);
+            globalMax = Math.max(globalMax, max);
         }
         return globalMax;
+    }
+
+    public int max3(int a, int b, int c) {
+        return Math.max(a, Math.max(b, c));
+    }
+
+    public int min3(int a, int b, int c) {
+        return Math.min(a, Math.min(b, c));
     }
 
     // http://blog.csdn.net/worldwindjp/article/details/39826823
