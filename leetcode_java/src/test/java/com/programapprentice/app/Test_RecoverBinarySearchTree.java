@@ -20,6 +20,7 @@ public class Test_RecoverBinarySearchTree {
 
     @Test
     public void test2() {
+        // {2, #, 1}
         RecoverBinarySearchTree.TreeNode root = new RecoverBinarySearchTree.TreeNode(2);
         root.right = new RecoverBinarySearchTree.TreeNode(1);
         obj.recoverTree(root);

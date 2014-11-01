@@ -34,7 +34,8 @@ public class RecoverBinarySearchTree {
         }
     }
 
-    public void recoverTree(TreeNode root) {
+    // recursive method to do it
+    public void recoverTreeRecursive(TreeNode root) {
         TreeNode first = null;
         TreeNode second = null;
         Result result = new Result(first, second);
@@ -63,6 +64,57 @@ public class RecoverBinarySearchTree {
         pre = root;
         pre = recoverTree(root.right, pre, result);
         return pre;
+    }
+
+    public void recoverTree(TreeNode root) {
+        if(root == null) {
+            return;
+        }
+        Stack<TreeNode> nodeStack = new Stack<TreeNode>();
+        Stack<String> statusStack = new Stack<String>();
+        TreeNode first = null;
+        TreeNode second = null;
+        TreeNode pre = null;
+
+        nodeStack.push(root);
+        statusStack.push("left");
+        String topStatus = null;
+        TreeNode topNode = null;
+        while(!nodeStack.isEmpty()) {
+            topStatus = statusStack.pop();
+            topNode = nodeStack.peek();
+            if(topStatus.equals("left")) {
+                if(topNode.left == null) {
+                    statusStack.push("root");
+                } else {
+                    statusStack.push("root");
+                    nodeStack.push(topNode.left);
+                    statusStack.push("left");
+                }
+            } else if (topStatus.equals("root")) {
+                if(pre != null && pre.val > topNode.val) {
+                    if(first == null) {
+                        first = pre;
+                        second = topNode;
+                    } else {
+                        second = topNode;
+                    }
+                }
+                pre = topNode;
+                nodeStack.pop();
+                if(topNode.right != null) {
+                    nodeStack.push(topNode.right);
+                    statusStack.push("left");
+                }
+            }
+        }
+
+        if(first != null && second != null) {
+            // swap first and second
+            int tmp = first.val;
+            first.val = second.val;
+            second.val = tmp;
+        }
     }
 
 }
