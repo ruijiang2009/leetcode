@@ -76,13 +76,30 @@ public class FindMinimuminRotatedSortedArrayII {
                 break;
             }
             if(num[mid] > num[low]) {
+                if(num[mid] > num[high]) {
+                    low = mid + 1;
+                } else if (num[mid] < num[high]) {
+                    high = mid - 1;
+                } else {
+                    // num[mid] == num[high]
+                    high--;
+                }
 //                low = mid + 1;
 //                low = midhigh;
-                low = mid;
+//                low = mid;
             } else if(num[mid] < num[low]){
+                if(num[mid] > num[high]) {
+                    low = mid + 1;
+                } else if(num[mid] < num[high]) {
+                    high = mid - 1;
+                } else {
+                    // num[mid] == num[high]
+                    low++;
+                }
 //                high = mid - 1;
 //                high = midlow;
-                high = mid;
+//                high = mid;
+//                low = mid + 1;
             } else {
                 // num[mid] == num[low]
                 low++;

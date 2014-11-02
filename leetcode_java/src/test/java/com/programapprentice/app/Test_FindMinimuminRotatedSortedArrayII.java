@@ -43,4 +43,28 @@ public class Test_FindMinimuminRotatedSortedArrayII {
         int actual = obj.findMin(input);
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void test5() {
+        int[] input = {10,1,10,10,10};
+        int expected = 1;
+        int actual = obj.findMin(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void test6() {
+        int[] input = {2,0,1,1,1};
+        int expected = 0;
+        int actual = obj.findMin(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void test7() {
+        int[] input = {1,1,2,0,0,1};
+        int expected = 0;
+        int actual = obj.findMin(input);
+        assertEquals(expected, actual);
+    }
 }
