@@ -2,3 +2,5 @@
 *.iml
 lib/
 *.class
+*.project
+*.cproject
