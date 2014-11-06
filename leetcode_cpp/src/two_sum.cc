@@ -5,16 +5,18 @@
 vector<int> Solution::twoSum(vector<int> &numbers, int target) {
     vector<int> result;
     map<int, int> goal_map;
-    map<int,int>::iterator map_it = goal_map.begin();
-    for(vector<int>::iterator it = numbers.begin(); it != numbers.end(); ++it) {
-        //unordered_map.insert(target - *it, target - *it);
-        goal_map.insert(map_it, pair<int,int>(target - *it, target - *it));
+    for(int i = 0; i < numbers.size(); i++) {
+        goal_map[numbers[i]] = i;
     }
-
-    for(vector<int>::iterator it = numbers.begin(); it != numbers.end(); ++it) {
-        if(goal_map.end() != goal_map.find(*it)) {
-            result.push_back(*it);
-            result.push_back(target - *it);
+    int tmp_target = 0;
+    for(int i = 0; i < numbers.size(); i++) {
+        tmp_target = target - numbers[i];
+        if(goal_map.find(tmp_target) != goal_map.end()) {
+            if(goal_map[tmp_target] != i) {
+                result.push_back(i+1);
+                result.push_back(goal_map[tmp_target] + 1);
+                break;
+            }
         }
     }
 
