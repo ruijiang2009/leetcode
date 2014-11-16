@@ -17,4 +17,20 @@ TEST(AddBinary, One) {
     EXPECT_EQ(expected, actual);
 }
 
+TEST(AddBinary, Two) {
+    Solution obj;
+    string a("0");
+    string b("0");
+    string expected("0");
+    string actual = obj.addBinary(a, b);
+    EXPECT_EQ(expected, actual);
+}
 
+TEST(AddBinary, Three) {
+    Solution obj;
+    string a("0");
+    string b("");
+    string expected("0");
+    string actual = obj.addBinary(a, b);
+    EXPECT_EQ(expected, actual);
+}
