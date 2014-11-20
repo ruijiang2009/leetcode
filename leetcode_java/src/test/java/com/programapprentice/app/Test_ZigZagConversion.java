@@ -18,6 +18,7 @@ public class Test_ZigZagConversion {
         int nRows = 3;
         String expected = "PAHNAPLSIIGYIR";
         String actual = obj.convert(input, nRows);
+        System.out.println(actual);
         assertEquals(expected, actual);
     }
 
@@ -32,9 +33,9 @@ public class Test_ZigZagConversion {
 
     @Test
     public void test3() {
-        String input = "AGMBFHLNCEIKDJ";
+        String input = "0123456789";
         int nRows = 4;
-        String expected = "ACB";
+        String expected = "0615724839";
         String actual = obj.convert(input, nRows);
         assertEquals(expected, actual);
     }
@@ -44,6 +45,24 @@ public class Test_ZigZagConversion {
         String input = "ABCD";
         int nRows = 2;
         String expected = "ACBD";
+        String actual = obj.convert(input, nRows);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void test5() {
+        String input = "AGMBFHLNCEIKDJ";
+        int nRows = 2;
+        String expected = "AMFLCIDGBHNEKJ";
+        String actual = obj.convert(input, nRows);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void test6() {
+        String input = "0123456789";
+        int nRows = 2;
+        String expected = "0246813579";
         String actual = obj.convert(input, nRows);
         assertEquals(expected, actual);
     }
