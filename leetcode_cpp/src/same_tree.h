@@ -19,7 +19,7 @@ struct TreeNode {
 
 class Solution {
 public:
-    bool isSameTree(TreeNode *p, TreeNode *q)l
+    bool isSameTree(TreeNode *p, TreeNode *q);
 };
 
 
