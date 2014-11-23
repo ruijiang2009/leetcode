@@ -48,7 +48,6 @@ TEST(StringToInteger, Five) {
     string s("2147483648");
     int expected = 2147483647;
     int actual = obj.atoi(s.c_str());
-
     EXPECT_EQ(expected, actual);
 }
 
