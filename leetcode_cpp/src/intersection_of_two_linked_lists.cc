@@ -30,7 +30,7 @@ Your code should preferably run in O(n) time and use only O(1) memory.
 #include "intersection_of_two_linked_lists.h"
 
 
-ListNode* Solution::getIntersectionNode(ListNode *headA, ListNode *headB) {
+ListNode * Solution::getIntersectionNode(ListNode *headA, ListNode *headB) {
     ListNode* pA = headA;
     ListNode* pB = headB;
 
