@@ -11,14 +11,14 @@
 
 using namespace::std;
 
-//TEST(InsertionSortList, One) {
-//    Solution obj;
-//    ListNode * head = new ListNode(1);
-//    head->next = new ListNode(1);
-//    ListNode * newHead = obj.insertionSortList(head);
-//    EXPECT_EQ(newHead->val, 1);
-//    EXPECT_EQ(newHead->next->val, 1);
-//}
+TEST(InsertionSortList, One) {
+    Solution obj;
+    ListNode * head = new ListNode(1);
+    head->next = new ListNode(1);
+    ListNode * newHead = obj.insertionSortList(head);
+    EXPECT_EQ(newHead->val, 1);
+    EXPECT_EQ(newHead->next->val, 1);
+}
 
 TEST(InsertionSortList, Two) {
     Solution obj;
