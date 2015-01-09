@@ -76,5 +76,48 @@ public class RestoreIPAddresses {
         return output;
     }
 
+    public List<String> restoreIpAddresses2(String s) {
+        return restoreIp(s, 4);
+    }
+
+    public boolean isValid(String s) {
+        if (s.charAt(0)=='0')
+            return s.equals("0");
+        int num = Integer.parseInt(s);
+        return num <= 255 && num > 0;
+    }
+
+    public List<String> restoreIp(String s, int numSegments) {
+        if(numSegments == 1) {
+            List<String> output = new ArrayList<String>();
+            if(s.length() <= 3 && s.length() > 0 && isValid(s)) {
+                output.add(s);
+            }
+            return output;
+        }
+        List<String> output = new ArrayList<String>();
+        List<String> tmp = new ArrayList<String>();
+
+        if(s.length() >= 1 && isValid(s.substring(0, 1))) {
+            tmp = restoreIp(s.substring(1), numSegments-1);
+            for(String str : tmp) {
+                output.add(s.substring(0, 1) + "." + str);
+            }
+        }
+
+        if(s.length() >= 2 && isValid(s.substring(0, 2))) {
+            tmp = restoreIp(s.substring(2), numSegments-1);
+            for(String str : tmp) {
+                output.add(s.substring(0, 2) + "." + str);
+            }
+        }
+        if(s.length() >= 3 && isValid(s.substring(0, 3))) {
+            tmp = restoreIp(s.substring(3), numSegments-1);
+            for(String str : tmp) {
+                output.add(s.substring(0, 3) + "." + str);
+            }
+        }
+        return output;
+    }
 
 }

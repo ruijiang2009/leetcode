@@ -72,7 +72,7 @@ public class Test_RestoreIPAddresses {
     @Test
     public void test6() {
         String input = "010010";
-        List<String> actual = obj.restoreIpAddresses(input);
+        List<String> actual = obj.restoreIpAddresses2(input);
         Collections.sort(actual);
         List<String> expected = new ArrayList<String>();
         expected.add("0.10.0.10");
