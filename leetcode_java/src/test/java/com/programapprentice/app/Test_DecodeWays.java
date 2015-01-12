@@ -107,6 +107,38 @@ public class Test_DecodeWays {
         int expected = 3;
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void test11() {
+        String input = "230";
+        int actual = obj.numDecodings2(input);
+        int expected = 0;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void test12() {
+        String input = "301";
+        int actual = obj.numDecodings2(input);
+        int expected = 1;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void test13() {
+        String input = "27";
+        int actual = obj.numDecodings2(input);
+        int expected = 1;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void test14() {
+        String input = "101";
+        int actual = obj.numDecodings2(input);
+        int expected = 1;
+        assertEquals(expected, actual);
+    }
 }
 
 
