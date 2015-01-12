@@ -61,4 +61,47 @@ public class NextPermutation {
             low ++;
         }
     }
+
+    public void nextPermutationSolution(int[] num) {
+        if(num == null || num.length == 0 || num.length ==1) {
+            return;
+        }
+        // find the partition number
+        int partitionIdx = -1;
+        int n = num.length;
+        for(int i = n-1; i > 0; i--) {
+            if(num[i] > num[i-1]) {
+                partitionIdx = i-1;
+                break;
+            }
+        }
+
+        int low = 0;
+        int high = n-1;
+        int tmp;
+        if(partitionIdx != -1) {
+            for(int i = n-1; i >= partitionIdx; i--) {
+                if(num[i] > num[partitionIdx] ) {
+                    // swap partition number and change number
+                    tmp = num[partitionIdx];
+                    num[partitionIdx] = num[i];
+                    num[i] = tmp;
+                    low = partitionIdx + 1;
+                    break;
+                }
+            }
+        }
+
+        // swap from low to high
+        while(low < high) {
+            tmp = num[high];
+            num[high] = num[low];
+            num[low] = tmp;
+            high --;
+            low ++;
+        }
+    }
 }
+
+// reference: http://www.lifeincode.net/programming/leetcode-next-permutation-java/
+// http://fisherlei.blogspot.com/2012/12/leetcode-next-permutation.html
